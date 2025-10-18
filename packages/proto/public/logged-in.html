@@ -2,197 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dra.Wave - Dashboard</title>
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/page.css">
+
+  <title>Dra.Wave - Logged In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Krona One', sans-serif; background-color:#14D972; }
-  </style>
+
 </head>
+
 <body>
 
-  <!-- HEADER -->
-  <table width="100%" bgcolor="black" cellpadding="10">
-    <tr>
-      <td align="left" width="20%">
-        <img src="images/logo.png" alt="Dra.Wave Logo" height="80">
-      </td>
-      <td align="center" style="color:white; font-size:18px;">
-        <em>"Where Artists Share Ideas, Not Just Songs"</em>
-      </td>
-      <td align="right" style="color:white;">
-        <a href="profile.html" style="color:white;">Profile</a> | 
-        <a href="upload.html" style="color:white;">Upload</a> | 
-        <a href="index.html" style="color:white;">Logout</a>
-      </td>
-    </tr>
-  </table>
-  <h2 align="center" style="color:rgb(0, 0, 0);">Latest Audio Posts</h2>
+<header>
+  <img src="images/logo.png" alt="Dra.Wave Logo">
+  <h2>"Where Artists Share Ideas"</h2>
+  <nav>
+    <ul>
+      <li><a href="profile.html">
+        Profile</a></li>
+      <li><a href="upload.html">Upload</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <blockquote>
+<main>
+  <h2>Welcome Back to Dra.Wave</h2>
 
-    <!-- Post 1 -->
-    <center>
-      <table width="70%" bgcolor="#14D972" cellpadding="5">
-        <tr>
-          <td align="left">
-            <h3><a href="profile.html">Nova Echo</a></h3>
-            <img src="images/1.png" alt="Album cover" width="300" height="200"><br>
-            <audio controls>
-              <source src="audio/sample1.wav" type="audio/mpeg">
-            </audio>
-            <table width="100%">
-              <tr>
-                <td><strong>Track:</strong> Neon Horizon</td>
-                <td><strong>Genre:</strong> Synthwave</td>
-                <td align="left">
-                  <a href="collaboration.html">Collaborate</a> | 
-                  <a href="feedback.html">Feedback</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <br>
+  <!-- Post 1 -->
+  <article>
+    <h3><a href="audiopost.html">Nova Echo</a></h3>
+    <img src="images/1.png" alt="Album cover">
+    <audio controls>
+      <source src="audio/sample1.wav" type="audio/mpeg">
+    </audio>
+    <dl>
+      <dt>Track:</dt><dd>Neon Horizon</dd>
+      <dt>Genre:</dt><dd>Synthwave</dd>
+      <dt>Duration:</dt><dd>3:42</dd>
+    </dl>
+    <p><a href="collaboration.html">Collaborate</a> | <a href="feedback.html">Feedback</a></p>
+  </article>
 
-    <!-- Post 2 -->
-    <center>
-      <table width="70%" bgcolor="#14D972" cellpadding="5">
-        <tr>
-          <td align="left">
-            <h3><a href="profile.html">Lofi Nomad</a></h3>
-            <img src="images/2.png" alt="Album cover" width="300" height="200"><br>
-            <audio controls>
-              <source src="audio/sample2.wav" type="audio/mpeg">
-            </audio>
-            <table width="100%">
-              <tr>
-                <td><strong>Track:</strong> Coffee Clouds</td>
-                <td><strong>Genre:</strong> Chillhop</td>
-                <td align="left">
-                  <a href="collaboration.html">Collaborate</a> | 
-                  <a href="feedback.html">Feedback</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <br>
+  <!-- Post 2 -->
+  <article>
+    <h3><a href="audiopost.html">Lofi Nomad</a></h3>
+    <img src="images/2.png" alt="Album cover">
+    <audio controls>
+      <source src="audio/sample2.wav" type="audio/mpeg">
+    </audio>
+    <dl>
+      <dt>Track:</dt><dd>Coffee Clouds</dd>
+      <dt>Genre:</dt><dd>Chillhop</dd>
+      <dt>Duration:</dt><dd>2:57</dd>
+    </dl>
+    <p><a href="collaboration.html">Collaborate</a> | <a href="feedback.html">Feedback</a></p>
+  </article>
 
-    <!-- Post 3 -->
-    <center>
-      <table width="70%" bgcolor="#14D972" cellpadding="5">
-        <tr>
-          <td align="left">
-            <h3><a href="profile.html">EchoVale</a></h3>
-            <img src="images/3.png" alt="Album cover" width="300" height="200"><br>
-            <audio controls>
-              <source src="audio/sample3.wav" type="audio/mpeg">
-            </audio>
-            <table width="100%">
-              <tr>
-                <td><strong>Track:</strong> Ocean Breeze</td>
-                <td><strong>Genre:</strong> Ambient</td>
-                <td align="left">
-                  <a href="collaboration.html">Collaborate</a> | 
-                  <a href="feedback.html">Feedback</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <br>
+  <!-- Post 3 -->
+  <article>
+    <h3><a href="audiopost.html">EchoVale</a></h3>
+    <img src="images/3.png" alt="Album cover">
+    <audio controls>
+      <source src="audio/sample3.wav" type="audio/mpeg">
+    </audio>
+    <dl>
+      <dt>Track:</dt><dd>Ocean Breeze</dd>
+      <dt>Genre:</dt><dd>Ambient</dd>
+      <dt>Duration:</dt><dd>4:21</dd>
+    </dl>
+    <p><a href="collaboration.html">Collaborate</a> | <a href="feedback.html">Feedback</a></p>
+  </article>
 
-    <!-- Post 4 -->
-    <center>
-      <table width="70%" bgcolor="#14D972" cellpadding="5">
-        <tr>
-          <td align="left">
-            <h3><a href="profile.html">Rhythm Alchemy</a></h3>
-            <img src="images/4.png" alt="Album cover" width="300" height="200"><br>
-            <audio controls>
-              <source src="audio/sample4.wav" type="audio/mpeg">
-            </audio>
-            <table width="100%">
-              <tr>
-                <td><strong>Track:</strong> Night Vibes</td>
-                <td><strong>Genre:</strong> Future Bass</td>
-                <td align="left">
-                  <a href="collaboration.html">Collaborate</a> | 
-                  <a href="feedback.html">Feedback</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <br>
+  <!-- Post 4 -->
+  <article>
+    <h3><a href="audiopost.html">Rhythm Alchemy</a></h3>
+    <img src="images/4.png" alt="Album cover">
+    <audio controls>
+      <source src="audio/sample4.wav" type="audio/mpeg">
+    </audio>
+    <dl>
+      <dt>Track:</dt><dd>Night Vibes</dd>
+      <dt>Genre:</dt><dd>Future Bass</dd>
+      <dt>Duration:</dt><dd>3:33</dd>
+    </dl>
+    <p><a href="collaboration.html">Collaborate</a> | <a href="feedback.html">Feedback</a></p>
+  </article>
 
-    <!-- Post 5 -->
-    <center>
-      <table width="70%" bgcolor="#14D972" cellpadding="5">
-        <tr>
-          <td align="left">
-            <h3><a href="profile.html">Solar Drift</a></h3>
-            <img src="images/5.png" alt="Album cover" width="300" height="200"><br>
-            <audio controls>
-              <source src="audio/sample5.wav" type="audio/mpeg">
-            </audio>
-            <table width="100%">
-              <tr>
-                <td><strong>Track:</strong> Sunrise Jam</td>
-                <td><strong>Genre:</strong> Jazz-Hop</td>
-                <td align="left">
-                  <a href="collaboration.html">Collaborate</a> | 
-                  <a href="feedback.html">Feedback</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <br>
+  <!-- Post 5 -->
+  <article>
+    <h3><a href="audiopost.html">Solar Drift</a></h3>
+    <img src="images/5.png" alt="Album cover">
+    <audio controls>
+      <source src="audio/sample5.wav" type="audio/mpeg">
+    </audio>
+    <dl>
+      <dt>Track:</dt><dd>Sunrise Jam</dd>
+      <dt>Genre:</dt><dd>Jazz-Hop</dd>
+      <dt>Duration:</dt><dd>5:02</dd>
+    </dl>
+    <p><a href="collaboration.html">Collaborate</a> | <a href="feedback.html">Feedback</a></p>
+  </article>
 
-    <!-- Post 6 -->
-    <center>
-      <table width="70%" bgcolor="#14D972" cellpadding="5">
-        <tr>
-          <td align="left">
-            <h3><a href="profile.html">Velvet Static</a></h3>
-            <img src="images/6.png" alt="Album cover" width="300" height="200"><br>
-            <audio controls>
-              <source src="audio/sample6.wav" type="audio/mpeg">
-            </audio>
-            <table width="100%">
-              <tr>
-                <td><strong>Track:</strong> Dream Circuit</td>
-                <td><strong>Genre:</strong> Lo-fi House</td>
-                <td align="left">
-                  <a href="collaboration.html">Collaborate</a> | 
-                  <a href="feedback.html">Feedback</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <br>
+  <!-- Post 6 -->
+  <article>
+    <h3><a href="audiopost.html">Velvet Static</a></h3>
+    <img src="images/6.png" alt="Album cover">
+    <audio controls>
+      <source src="audio/sample6.wav" type="audio/mpeg">
+    </audio>
+    <dl>
+      <dt>Track:</dt><dd>Dream Circuit</dd>
+      <dt>Genre:</dt><dd>Lo-fi House</dd>
+      <dt>Duration:</dt><dd>4:05</dd>
+    </dl>
+    <p><a href="collaboration.html">Collaborate</a> | <a href="feedback.html">Feedback</a></p>
+  </article>
 
-  </blockquote>
-  <!-- FOOTER -->
-  <table width="100%" bgcolor="black" cellpadding="10">
-    <tr>
-      <td align="center" style="color:white;">© 2025 Dra.Wave — Built for Artists, By Artists</td>
-    </tr>
-  </table>
+</main>
+
+<footer>
+  <p>© 2025 Dra.Wave — Built for Artists, By Artists</p>
+</footer>
 
 </body>
 </html>
