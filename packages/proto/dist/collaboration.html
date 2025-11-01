@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/page.css">
+
+  <title>Collaboration - Dra.Wave</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header>
+  <img src="images/logo.png" alt="Dra.Wave Logo">
+  <h2>"Where Artists Share Ideas"</h2>
+  <nav>
+    <ul>
+      <li><a href="logged-in.html">
+        <img src="/icons/home.svg" class="nav-icon" alt="Home">
+        Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="upload.html">Upload</a></li>
+      <li><a href="settings.html">Settings</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Send a Collaboration Request</h2>
+    <form>
+      <label for="track">Track:</label>
+      <input type="text" id="track" name="track" value="Neon Horizon" readonly>
+
+      <label for="message">Message to Artist:</label>
+      <textarea id="message" name="message" rows="4" placeholder="Describe your idea for collaboration..."></textarea>
+
+      <button type="submit">Send Request</button>
+    </form>
+  </section>
+
+  <section>
+    <h3>Recent Collaborations</h3>
+    <ul>
+      <li><strong>Nova Echo</strong> & <strong>Lofi Nomad</strong> — “Urban Dreamscape” (2025)</li>
+      <li><strong>Velvet Static</strong> & <strong>EchoVale</strong> — “Late Night Layers” (2025)</li>
+      <li><strong>Solar Drift</strong> & <strong>DJ Karma</strong> — “LoFi Jam Session” (2025)</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>© 2025 Dra.Wave — Built for Artists, By Artists</p>
+</footer>
+
+</body>
+</html>
+

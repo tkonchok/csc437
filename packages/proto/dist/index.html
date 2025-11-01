@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/page.css">
+
+  <title>Dra.Wave - Homepage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/main-BfotUaAo.js"></script>
+</head>
+
+<body>
+
+<header>
+  <img src="/packages/proto/public/images/Logo.png" alt="Dra.Wave Logo">
+  <h2>"Where Artists Share Ideas"</h2>
+  <nav>
+    <ul style="list-style-type:none; padding:0; margin:0;">
+      <li style="display:inline;"><a href="/login.html">Login</a></li>
+      <li style="display:inline;">|</li>
+      <li style="display:inline;"><a href="/signup.html">Sign Up</a></li>
+    </ul>
+  </nav>
+
+  <!-- ✅ Dark-mode switch -->
+  <label id="darkmode-toggle" style="margin-left:auto;">
+    <input type="checkbox" autocomplete="off" />
+    Dark mode
+  </label>
+</header>
+
+<main>
+  <h2>Latest Audio Posts</h2>
+  <dra-feed src="/data/posts.json"></dra-feed>
+</main>
+
+<footer>
+  <p>© 2025 Dra.Wave — Built for Artists, By Artists</p>
+</footer>
+
+
+  <script type="module" src="/scripts/darkmode.js"></script>
+
+</body>
+</html>

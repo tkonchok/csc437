@@ -1,0 +1,43 @@
+
+:root {
+  /*Colors*/
+  --color-accent: #14D972;             
+  --color-accent-dark: #0FAE5B;       
+  --color-background-page: #14D972;   
+  --color-background-header: #000000;  
+  --color-background-card: #ffffff;     
+  --color-border: #000000;         
+  --color-text-default: #000000;       
+  --color-text-header: #ffffff;        
+  --color-link: #000000;           
+  --color-link-hover: var(--color-accent-dark);
+
+  /*Typography */
+  --font-family-base: 'Krona One', sans-serif;
+  --font-size-base: 16px;
+  --font-size-heading: 22px;
+
+  /*Spacing*/
+  --space-xs: 0.25rem;
+  --space-s: 0.5rem;
+  --space-m: 1rem;
+  --space-l: 2rem;
+
+  /*Borders & Radius*/
+  --radius-card: 10px;
+  --radius-button: 6px;
+
+  /*Buttons*/
+  --color-button-bg: var(--color-accent);
+  --color-button-text: var(--color-text-default);
+  --color-button-hover: var(--color-accent-dark);
+}
+
+/* === Dark-mode overrides === */
+body.dark-mode {
+  --color-background-page: #121212;
+  --color-text: #eaeaea;
+  --color-background-card: #1e1e1e;
+  --color-accent: #90caf9;
+}
+

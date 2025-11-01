@@ -1,0 +1,50 @@
+[
+  {
+    "artist": "Nova Echo",
+    "title": "Neon Horizon",
+    "genre": "Synthwave",
+    "duration": "3:42",
+    "imgSrc": "/images/1.png",
+    "audioSrc": "/audio/sample1.wav"
+  },
+  {
+    "artist": "Lofi Nomad",
+    "title": "Coffee Clouds",
+    "genre": "Chillhop",
+    "duration": "2:57",
+    "imgSrc": "/images/2.png",
+    "audioSrc": "/audio/sample2.wav"
+  },
+  {
+    "artist": "EchoVale",
+    "title": "Ocean Breeze",
+    "genre": "Ambient",
+    "duration": "4:21",
+    "imgSrc": "/images/3.png",
+    "audioSrc": "/audio/sample3.wav"
+  },
+  {
+    "artist": "Rhythm Alchemy",
+    "title": "Night Vibes",
+    "genre": "Future Bass",
+    "duration": "3:33",
+    "imgSrc": "/images/4.png",
+    "audioSrc": "/audio/sample4.wav"
+  },
+  {
+    "artist": "Solar Drift",
+    "title": "Sunrise Jam",
+    "genre": "Jazz-Hop",
+    "duration": "5:02",
+    "imgSrc": "/images/5.png",
+    "audioSrc": "/audio/sample5.wav"
+  },
+  {
+    "artist": "Velvet Static",
+    "title": "Dream Circuit",
+    "genre": "Lo-fi House",
+    "duration": "4:05",
+    "imgSrc": "/images/6.png",
+    "audioSrc": "/audio/sample6.wav"
+  }
+]
