@@ -32,3 +32,12 @@
   --color-button-text: var(--color-text-default);
   --color-button-hover: var(--color-accent-dark);
 }
+
+/* === Dark-mode overrides === */
+body.dark-mode {
+  --color-background-page: #121212;
+  --color-text: #eaeaea;
+  --color-background-card: #1e1e1e;
+  --color-accent: #90caf9;
+}
+
