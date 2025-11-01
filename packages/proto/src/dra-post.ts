@@ -1,4 +1,3 @@
-// packages/proto/src/dra-post.ts
 import { html, css, LitElement } from "lit";
 import { property } from "lit/decorators.js";
 import reset from "./styles/reset.css.ts";
@@ -33,7 +32,7 @@ export class DraPostElement extends LitElement {
   }
 
   static styles = [
-    reset.styles, // ✅ include the reset first
+    reset.styles,
     css`
       article {
         background-color: var(--color-background-card);

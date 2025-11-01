@@ -1,4 +1,3 @@
-// packages/proto/src/styles/reset.css.ts
 import { css } from "lit";
 
 const styles = css`
