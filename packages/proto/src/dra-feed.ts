@@ -1,61 +1,64 @@
 import { html, css, LitElement } from "lit";
 import { property, state } from "lit/decorators.js";
 
-interface Post {
+type AudioPost = {
+  _id?: string;
   artist: string;
   title: string;
   genre: string;
-  duration: string;
   imgSrc: string;
   audioSrc: string;
-}
+};
 
 export class DraFeedElement extends LitElement {
-  @property() src?: string;
-
-  @state() posts: Array<Post> = [];
-  @state() loading: boolean = true;
+  @property() src = "";
+  @state() posts: AudioPost[] = [];
+  @state() loading = true;
   @state() error: string | null = null;
 
   override connectedCallback() {
     super.connectedCallback();
-    if (this.src) this.hydrate(this.src);
+    if (this.src) this.loadFeed();
   }
 
-  async hydrate(src: string) {
+  override updated(changed: Map<string, unknown>) {
+    if (changed.has("src") && this.src) {
+      this.loadFeed();
+    }
+  }
+
+  private async loadFeed() {
+    this.loading = true;
+    this.error = null;
     try {
-      const res = await fetch(src);
+      const res = await fetch(this.src);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = (await res.json()) as Array<Post>;
-      this.posts = json;
-      this.loading = false;
-    } catch (err: any) {
+      const json = await res.json();
+      this.posts = Array.isArray(json) ? json : [];
+    } catch (err) {
       console.error("Feed load failed:", err);
-      this.error = "Could not load posts. Please try again later.";
+      this.error = "Unable to load posts.";
+    } finally {
       this.loading = false;
     }
   }
 
   override render() {
-    if (this.loading) {
-      return html`<p class="status">Loading posts...</p>`;
-    }
-
-    if (this.error) {
-      return html`<p class="status error">${this.error}</p>`;
-    }
+    if (this.loading) return html`<p>Loading posts...</p>`;
+    if (this.error) return html`<p class="error">${this.error}</p>`;
+    if (!this.posts.length) return html`<p>No posts yet.</p>`;
 
     return html`
       <section class="feed">
         ${this.posts.map(
-          (post) => html`
+          (p) => html`
             <dra-post
-              artist=${post.artist}
-              title=${post.title}
-              genre=${post.genre}
-              duration=${post.duration}
-              img-src=${post.imgSrc}
-              audio-src=${post.audioSrc}
+              title=${p.title}
+              artist=${p.artist}
+              genre=${p.genre}
+              img-src=${p.imgSrc || ""}
+              audio-src=${p.audioSrc || ""}
+              post-id=${p._id || ""}
             ></dra-post>
           `
         )}
@@ -65,18 +68,14 @@ export class DraFeedElement extends LitElement {
 
   static styles = css`
     .feed {
+      width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      justify-content: start;
     }
-    .status {
-      text-align: center;
-      font-size: 1.2rem;
-      color: var(--color-text);
-      margin: 2rem 0;
-    }
-    .status.error {
-      color: crimson;
-    }
+    .error { color: crimson; text-align: center; }
   `;
 }
+
+customElements.define("dra-feed", DraFeedElement);

@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment
+.env
+.env.local
+
+# Build artifacts
+dist/
+build/
+uploads/
+
+# Proto client
+packages/proto/dist/
+packages/proto/node_modules/
+
+# MacOS junk
+.DS_Store
+
+# Logs
+*.log

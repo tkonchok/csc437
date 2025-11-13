@@ -1,22 +1,13 @@
 {
   "name": "proto",
   "version": "1.0.0",
-  "description": "",
-  "main": "public/index.html",
   "scripts": {
-  "dev": "npx vite",
-  "build": "npx tsc && npx vite build",
-  "start": "http-server dist -p 3000"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@calpoly/mustang": "^1.0.15",
-    "http-server": "^14.1.1",
-    "lit": "^3.3.1"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3",
-    "vite": "^7.1.12"
+    "lit": "^3.3.1",
+    "vite": "^7.2.2"
   }
 }

@@ -2,69 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/styles/reset.css">
-  <link rel="stylesheet" href="/styles/tokens.css">
+  <title>Dra.Wave</title>
   <link rel="stylesheet" href="/styles/page.css">
-
-  <title>Dra.Wave - Homepage</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet">
 </head>
-
 <body>
-  <script type="module">
-    import { define } from "@calpoly/mustang";
-    import { DraPostElement } from "/src/dra-post.js";
-
-    define({ "dra-post": DraPostElement });
-  </script>
-
 <header>
-  <img src="/packages/proto/public/images/Logo.png" alt="Dra.Wave Logo">
-  <h2>"Where Artists Share Ideas"</h2>
-  <nav>
-    <ul style="list-style-type:none; padding:0; margin:0;">
-      <li style="display:inline;"><a href="/login.html">Login</a></li>
-      <li style="display:inline;">|</li>
-      <li style="display:inline;"><a href="/signup.html">Sign Up</a></li>
-    </ul>
-  </nav>
+  <div class="header-row">
+    <div class="logo">
+      <a href="index.html"><img src="/images/Logo.png" alt="Dra.Wave Logo"></a>
+    </div>
+    <div class="header-center">
+      <h2 class="slogan">"Where Artists Share Ideas"</h2>
+    </div>
 
-  <!-- ✅ Dark-mode switch -->
-  <label id="darkmode-toggle" style="margin-left:auto;">
-    <input type="checkbox" autocomplete="off" />
-    Dark mode
-  </label>
+    <div class="dark-toggle">
+      <label id="darkmode-toggle">
+        <input type="checkbox" autocomplete="off"> Dark Mode
+      </label>
+    </div>
+  </div>
 </header>
 
-<main>
-  <h2>Latest Audio Posts</h2>
-  <dra-feed src="/data/posts.json"></dra-feed>
-</main>
+<div id="menu-bar"></div>
 
-<footer>
-  <p>© 2025 Dra.Wave — Built for Artists, By Artists</p>
-</footer>
+  <main>
+    <h2>Discover New Sounds</h2>
+    <section id="feed" class="feed"></section>
+  </main>
 
-  <script type="module">
-  import { define } from "@calpoly/mustang";
-  import { DraPostElement } from "/src/dra-post.ts";
+  <footer>
+    <p>© 2025 Dra.Wave — Built for Artists, By Artists</p>
+  </footer>
 
-  define({ "dra-post": DraPostElement });
-  </script>
-
-  <script type="module" src="/scripts/darkmode.js"></script>
-  <script type="module">
-  import { define } from "@calpoly/mustang";
-  import { DraPostElement } from "/src/dra-post.ts";
-  import { DraFeedElement } from "/src/dra-feed.ts";
-
-  define({
-    "dra-post": DraPostElement,
-    "dra-feed": DraFeedElement
-  });
-  </script>
-
+  <script type="module" src="/src/scripts/darkmode.js"></script>
+  <script type="module" src="/src/scripts/auth-ui.js"></script>
+  <script type="module" src="/src/scripts/feed.js"></script>
 </body>
 </html>

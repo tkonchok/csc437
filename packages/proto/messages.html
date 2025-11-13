@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Messages - Dra.Wave</title>
+  <link rel="stylesheet" href="/styles/page.css">
+</head>
+
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">
+      <a href="index.html"><img src="/images/Logo.png"></a>
+    </div>
+    <div class="header-center">
+      <h2 class="slogan">Messages</h2>
+    </div>
+    <div class="dark-toggle">
+      <label id="darkmode-toggle"><input type="checkbox"> Dark Mode</label>
+    </div>
+  </div>
+</header>
+
+<div id="menu-bar"></div>
+
+<main>
+  <h2>Your Inbox</h2>
+  <div id="messages-box"></div>
+
+  <h3>Send Message</h3>
+  <form id="send-form">
+    <label>To (username)</label>
+    <input id="to-user" required>
+
+    <label>Message</label>
+    <textarea id="msg-text" required></textarea>
+
+    <button type="submit">Send</button>
+    <p id="msg-status"></p>
+  </form>
+
+</main>
+
+<script type="module" src="/src/scripts/auth-ui.js"></script>
+<script type="module" src="/src/scripts/darkmode.js"></script>
+<script type="module" src="/src/scripts/messages.js"></script>
+</body>
+</html>
