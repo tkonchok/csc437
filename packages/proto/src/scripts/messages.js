@@ -2,7 +2,6 @@ const API = "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username");
   const box = document.getElementById("messages-box");
   const form = document.getElementById("send-form");
 
@@ -17,22 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const msgs = await res.json();
 
-    if (msgs.length === 0) {
-      box.innerHTML = "<p>No messages yet.</p>";
+    if (!msgs.length) {
+      box.innerHTML = "<p>No messages.</p>";
       return;
     }
 
-    box.innerHTML = msgs
-      .map(
-        (m) => `
+    box.innerHTML = msgs.map(
+      m => `
         <div class="msg">
           <p><strong>${m.from}</strong> → <strong>${m.to}</strong></p>
           <p>${m.text}</p>
           <small>${new Date(m.timestamp).toLocaleString()}</small>
         </div>
-      `
-      )
-      .join("");
+    `
+    ).join("");
   }
 
   form.addEventListener("submit", async (e) => {
@@ -41,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const to = document.getElementById("to-user").value;
     const text = document.getElementById("msg-text").value;
 
-    const res = await fetch(`${API}/messages/send`, {
+    await fetch(`${API}/messages/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ to, text }),
     });
 
-    document.getElementById("msg-status").textContent = "Message sent!";
+    document.getElementById("msg-status").textContent = "Sent!";
     form.reset();
     loadMessages();
   });

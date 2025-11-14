@@ -1,47 +1,124 @@
-//server/src/routes/auth.ts
-import express from "express";
-import bcrypt from "bcrypt";
+// server/src/routes/auth.ts
+import dotenv from "dotenv";
+import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+
+import credentials from "../services/credential-svc";
 import User from "../models/user";
+
+dotenv.config();
 
 const router = express.Router();
 
-//REGISTER
-router.post("/register", async (req, res) => {
+const TOKEN_SECRET: string = process.env.TOKEN_SECRET || "NOT_A_SECRET";
+
+interface TokenPayload {
+  username: string;
+}
+
+export interface AuthUser {
+  username: string;
+}
+
+export interface AuthRequest extends Request {
+  user?: AuthUser;
+}
+
+/*JWT helper*/
+
+function generateAccessToken(username: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      { username },
+      TOKEN_SECRET,
+      { expiresIn: "1d" },
+      (error, token) => {
+        if (error || !token) reject(error);
+        else resolve(token as string);
+      }
+    );
+  });
+}
+
+/*REGISTER*/
+// POST /auth/register
+router.post("/register", (req: Request, res: Response) => {
   const { username, password, userType } = req.body;
 
-  if (!username || !password || !userType) {
-    return res.status(400).json({ message: "Missing fields" });
+  if (typeof username !== "string" || typeof password !== "string") {
+    return res
+      .status(400)
+      .send("Bad request: Invalid input data.");
   }
 
-  try {
-    const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashed, userType });
-    await user.save();
+  //fallback so your profile still works if userType is missing
+  const finalUserType = (userType === "artist" || userType === "curator")
+    ? userType
+    : "artist";
 
-    res.status(201).json({ message: "User created" });
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
-  }
+  credentials
+    .create(username, password)
+    //create/update profile document as well
+    .then(() =>
+      User.findOneAndUpdate(
+        { username },
+        {
+          username,
+          userType: finalUserType
+        },
+        { upsert: true, new: true }
+      )
+    )
+    .then(() => generateAccessToken(username))
+    .then((token) => {
+      res.status(201).send({ token });
+    })
+    .catch((err: any) => {
+      console.error(err);
+      res.status(409).send({ error: err.message || String(err) });
+    });
 });
 
-//LOGIN
-router.post("/login", async (req, res) => {
+/*LOGIN*/
+// POST /auth/login
+router.post("/login", (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
-  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+  if (!username || !password) {
+    return res
+      .status(400)
+      .send("Bad request: Invalid input data.");
+  }
 
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(401).json({ message: "Invalid credentials" });
-
-  const token = jwt.sign(
-    { username: user.username, userType: user.userType },
-    process.env.JWT_SECRET || "supersecret",
-    { expiresIn: "1d" }
-  );
-
-  res.json({ token });
+  credentials
+    .verify(username, password)
+    .then((goodUser: string) => generateAccessToken(goodUser))
+    .then((token) => res.status(200).send({ token }))
+    .catch((_error) => res.status(401).send("Unauthorized"));
 });
+
+/*AUTH MIDDLEWARE*/
+export function authenticateUser(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // "Bearer <token>"
+
+  if (!token) {
+    return res.status(401).end();
+  }
+
+  jwt.verify(token, TOKEN_SECRET, (error, decoded) => {
+    if (decoded && !error) {
+      const payload = decoded as TokenPayload;
+      req.user = { username: payload.username };
+      next();
+    } else {
+      res.status(401).end();
+    }
+  });
+}
 
 export default router;

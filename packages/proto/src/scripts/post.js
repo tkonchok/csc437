@@ -1,19 +1,14 @@
 const API = "http://localhost:3000";
 
 //stop multiple audios
-document.addEventListener(
-  "play",
-  function (e) {
-    const audios = document.querySelectorAll("audio");
-    audios.forEach((a) => {
-      if (a !== e.target) {
-        a.pause();
-        a.currentTime = 0;
-      }
-    });
-  },
-  true
-);
+document.addEventListener("play", (e) => {
+  document.querySelectorAll("audio").forEach(a => {
+    if (a !== e.target) {
+      a.pause();
+      a.currentTime = 0;
+    }
+  });
+}, true);
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
@@ -36,12 +31,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        text,
-        user: username
-      })
+      body: JSON.stringify({ text, user: username }),
     });
 
     document.getElementById("comment-text").value = "";
@@ -52,14 +44,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("collab-btn").addEventListener("click", async () => {
     await fetch(`${API}/messages/collab/${id}`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     alert("Collaboration request sent!");
   });
 });
 
-//LOAD INDIVIDUAL POST
+/*LOAD INDIVIDUAL POST*/
 async function loadPost(id) {
   const res = await fetch(`${API}/api/posts/${id}`);
 
@@ -70,11 +62,12 @@ async function loadPost(id) {
 
   const p = await res.json();
 
-  //Detect if post is static or uploaded
-  const isStatic = !p.user;
+  //determine static vs uploaded
+  let imgSrc = p.imgSrc;
+  let audioSrc = p.audioSrc;
 
-  const imgSrc = isStatic ? p.imgSrc : API + p.imgSrc;
-  const audioSrc = isStatic ? p.audioSrc : API + p.audioSrc;
+  if (p.imgSrc.startsWith("/uploads")) imgSrc = `${API}${p.imgSrc}`;
+  if (p.audioSrc.startsWith("/uploads")) audioSrc = `${API}${p.audioSrc}`;
 
   document.getElementById("post-container").innerHTML = `
     <article class="single-post">
@@ -90,9 +83,11 @@ async function loadPost(id) {
   `;
 }
 
-// LOAD COMMENTS
+/*LOAD COMMENTS*/
 async function loadComments(id) {
-  const res = await fetch(`${API}/api/comments/${id}`);
+  const res = await fetch(`${API}/api/comments/${id}`, {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+});
   const comments = await res.json();
 
   if (!Array.isArray(comments) || comments.length === 0) {
@@ -101,6 +96,6 @@ async function loadComments(id) {
   }
 
   document.getElementById("comments").innerHTML = comments
-    .map((c) => `<p><strong>${c.user}:</strong> ${c.text}</p>`)
+    .map(c => `<p><strong>${c.user}:</strong> ${c.text}</p>`)
     .join("");
 }

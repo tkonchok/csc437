@@ -16,7 +16,7 @@ img { max-width: 100%; display: block; }
   --space-l: 2rem;
 }
 
-/* === LIGHT MODE === */
+/*LIGHT MODE*/
 html {
   --bg-page: #fff;
   --bg-card: #f8f8f8;
@@ -26,7 +26,7 @@ html {
   --border: #000;
 }
 
-/* === DARK MODE === */
+/*DARK MODE*/
 html.dark-mode {
   --bg-page: #000;
   --bg-card: #111;
@@ -36,7 +36,7 @@ html.dark-mode {
   --border: #14d972;
 }
 
-/* === BODY === */
+/*BODY*/
 body {
   font-family: 'Krona One', sans-serif;
   background: var(--bg-page);
@@ -47,7 +47,7 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
-/* === HEADER (Logo + Slogan) === */
+/*HEADER (Logo + Slogan)*/
 header {
   background: var(--bg-header);
   color: var(--text-header);
@@ -76,7 +76,7 @@ header {
   margin-bottom: 0.5rem;
 }
 
-/* === Top Nav Inside Header === */
+/*Top Nav Inside Header*/
 .header-center nav ul {
   display: flex;
   justify-content: center;
@@ -97,7 +97,7 @@ header {
   color: var(--black);
 }
 
-/* === DARK MODE TOGGLE === */
+/*DARK MODE TOGGLE*/
 .dark-toggle label {
   display: flex;
   align-items: center;
@@ -107,7 +107,7 @@ header {
   color: var(--text-header);
 }
 
-/* === MAIN === */
+/*MAIN*/
 main {
   flex: 1;
   max-width: 1200px;
@@ -115,7 +115,7 @@ main {
   padding: var(--space-l);
 }
 
-/* === FEED GRID === */
+/*FEED GRID*/
 .feed {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -141,7 +141,7 @@ article img {
 }
 audio { width: 100%; margin-top: var(--space-s); }
 
-/* === FORMS === */
+/*FORMS*/
 form {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -178,7 +178,7 @@ button {
 }
 button:hover { background: var(--green-dark); }
 
-/* === FOOTER === */
+/*FOOTER*/
 footer {
   background: var(--bg-header);
   color: var(--text-header);
@@ -188,7 +188,7 @@ footer {
   margin-top: auto;
 }
 
-/* === MENU BAR (Below Header) === */
+/*MENU BAR (Below Header)*/
 #menu-bar {
   background: var(--bg-header);
   padding: 0.5rem 0;
@@ -203,7 +203,7 @@ footer {
   list-style: none;
 }
 
-/* Regular menu items */
+/*regular menu items */
 .menu-nav ul li a {
   color: var(--text-header);
   text-decoration: none;
@@ -214,20 +214,20 @@ footer {
   transition: 0.3s;
 }
 
-/* Hover for regular items */
+/*Hover for regular items*/
 .menu-nav ul li a:not(.menu-profile-link):hover {
   background: var(--green);
   color: var(--black);
 }
 
-/* Avatar link (no button styling) */
+/*Avatar link (no button styling) */
 .menu-profile-link {
   padding: 0 !important;
   background: none !important;
   border-radius: 50% !important;
 }
 
-/* Avatar image */
+/*Avatar image */
 .menu-avatar {
   width: 45px;
   height: 45px;
@@ -241,7 +241,7 @@ footer {
   font-size: 1rem;
 }
 
-/* === RESPONSIVE === */
+/*RESPONSIVE*/
 @media (max-width: 700px) {
   .header-row { 
     flex-direction: column; 

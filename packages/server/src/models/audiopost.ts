@@ -9,16 +9,16 @@ export interface AudioPost {
   user?: string;
 }
 
-const schema = new Schema<AudioPost>(
+const AudioPostSchema = new Schema<AudioPost>(
   {
-    title: { type: String, required: true },
-    artist: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
+    artist: { type: String, required: true, trim: true },
     genre: { type: String, required: true },
     imgSrc: { type: String, required: true },
     audioSrc: { type: String, required: true },
-    user: { type: String, required: false },
+    user: { type: String }
   },
   { collection: "dra_audio_posts" }
 );
 
-export default model<AudioPost>("AudioPost", schema);
+export default model<AudioPost>("AudioPost", AudioPostSchema);

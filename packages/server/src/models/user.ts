@@ -3,19 +3,19 @@ import { Schema, model } from "mongoose";
 
 export interface IUser {
   username: string;
-  password: string;
   userType: "artist" | "curator";
   bio?: string;
   avatarSrc?: string;
 }
 
-const UserSchema = new Schema<IUser>({
-  username: { type: String, required: true, unique: true, trim: true },
-  password: { type: String, required: true },
-  userType: { type: String, enum: ["artist", "curator"], required: true },
-  bio: { type: String, default: "" },
-  avatarSrc: { type: String, default: "" },
-});
+const UserSchema = new Schema<IUser>(
+  {
+    username: { type: String, required: true, unique: true, trim: true },
+    userType: { type: String, enum: ["artist", "curator"], required: true },
+    bio: { type: String, default: "" },
+    avatarSrc: { type: String, default: "" }
+  },
+  { collection: "dra_users" }
+);
 
-const User = model<IUser>("User", UserSchema);
-export default User;
+export default model<IUser>("User", UserSchema);

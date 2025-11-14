@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("profile-form");
   const myPosts = document.getElementById("my-posts");
 
-  // LOAD PROFILE
+  //LOAD PROFILE
   async function loadProfile() {
     try {
       const res = await fetch(`${API}/profile/me`, {
@@ -40,14 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) throw new Error("Failed to load profile");
       const user = await res.json();
 
-      // Avatar
+      //Avatar
       if (user.avatarSrc) {
         const fullUrl = `${API}${user.avatarSrc}`;
         avatarImg.src = fullUrl;
         localStorage.setItem("avatar", fullUrl);
       }
 
-      // Bio
+      //Bio
       bioInput.value = user.bio || "";
 
     } catch (err) {
@@ -57,13 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // LOAD USER’S POSTS
+  //LOAD USER’S POSTS
   async function loadMyPosts() {
     try {
-      // FIXED: must be artist= not user=
-      const res = await fetch(
-        `${API}/api/posts?artist=${encodeURIComponent(username)}`
-      );
+      const res = await fetch(`${API}/api/audioposts?artist=${encodeURIComponent(username)}`);
 
       if (!res.ok) throw new Error("Failed to load posts");
 
@@ -95,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // SAVE BIO + AVATAR
+  //SAVE BIO + AVATAR
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     msgEl.textContent = "";

@@ -1,15 +1,31 @@
+//src/services/mongo.ts
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+
+mongoose.set("debug", true);
 dotenv.config();
 
-export function connect() {
-  const uri = process.env.MONGO_URI || "";
-  if (!uri) {
-    console.error("Missing MONGO_URI in .env");
-    process.exit(1);
+function getMongoURI(dbname: string) {
+  let connection_string = `mongodb://localhost:27017/${dbname}`;
+  const { MONGO_USER, MONGO_PWD, MONGO_CLUSTER } = process.env;
+
+  if (MONGO_USER && MONGO_PWD && MONGO_CLUSTER) {
+    console.log(
+      "Connecting to MongoDB at",
+      `mongodb+srv://${MONGO_USER}:<password>@${MONGO_CLUSTER}/${dbname}`
+    );
+
+    connection_string =
+      `mongodb+srv://${MONGO_USER}:${MONGO_PWD}@${MONGO_CLUSTER}/${dbname}?retryWrites=true&w=majority`;
+  } else {
+    console.log("Connecting to MongoDB at", connection_string);
   }
+
+  return connection_string;
+}
+
+export function connect(dbname: string) {
   mongoose
-    .connect(uri)
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.error("MongoDB connection error:", err));
+    .connect(getMongoURI(dbname))
+    .catch((error) => console.log(error));
 }

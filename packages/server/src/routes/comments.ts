@@ -1,37 +1,73 @@
-import express from "express";
-import Comment from "../models/Comment";
-import { authenticate, AuthRequest } from "../middleware/authenticate";
+// server/src/routes/comments.ts
+import express, { Request, Response } from "express";
+import Comments from "../services/comment-svc";
+import { authenticateUser } from "./auth";
 
 const router = express.Router();
 
-//GET comments for a post
-router.get("/:postId", async (req, res) => {
+/* -----------------------------
+   GET all comments for a post
+   /api/comments/:postId
+------------------------------ */
+router.get("/:postId", async (req: Request, res: Response) => {
   try {
-    const comments = await Comment.find({ postId: req.params.postId });
+    const comments = await Comments.forPost(req.params.postId);
     res.json(comments);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Failed to load comments" });
   }
 });
 
-//POST a new comment
-router.post("/:postId", authenticate, async (req: AuthRequest, res) => {
+/* -----------------------------
+   CREATE a comment (AUTH REQUIRED)
+   /api/comments/:postId
+------------------------------ */
+router.post("/:postId", authenticateUser, async (req: Request, res: Response) => {
   try {
-    const text = req.body.text;
-    const user = req.user?.username;
+    const username = (req as any).user?.username;
+    if (!username) return res.status(401).json({ error: "Unauthorized" });
 
-    if (!text) return res.status(400).json({ error: "Empty comment" });
-
-    const c = await Comment.create({
+    const newComment = await Comments.create({
       postId: req.params.postId,
-      user,
-      text
+      text: req.body.text,
+      user: username
     });
 
-    res.status(201).json(c);
-
+    res.status(201).json(newComment);
   } catch (err) {
-    res.status(500).json({ error: "Failed to save comment" });
+    console.error(err);
+    res.status(500).json({ error: "Failed to create comment" });
+  }
+});
+
+/*UPDATE comment (AUTH REQUIRED)
+   /api/comments/:commentId*/
+router.put("/:commentId", authenticateUser, async (req: Request, res: Response) => {
+  try {
+    const updated = await Comments.update(req.params.commentId, {
+      text: req.body.text
+    });
+
+    if (!updated) return res.status(404).json({ error: "Not found" });
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update comment" });
+  }
+});
+
+/*DELETE comment (AUTH REQUIRED)
+   /api/comments/:commentId*/
+router.delete("/:commentId", authenticateUser, async (req: Request, res: Response) => {
+  try {
+    const removed = await Comments.remove(req.params.commentId);
+    if (!removed) return res.status(404).json({ error: "Not found" });
+
+    res.status(204).end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete comment" });
   }
 });
 

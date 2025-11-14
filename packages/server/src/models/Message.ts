@@ -7,11 +7,14 @@ export interface IMessage {
   timestamp: Date;
 }
 
-const MessageSchema = new Schema<IMessage>({
-  from: { type: String, required: true },
-  to: { type: String, required: true },
-  text: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now }
-});
+const MessageSchema = new Schema<IMessage>(
+  {
+    from: { type: String, required: true, trim: true },
+    to: { type: String, required: true, trim: true },
+    text: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now }
+  },
+  { collection: "dra_messages" }
+);
 
 export default model<IMessage>("Message", MessageSchema);

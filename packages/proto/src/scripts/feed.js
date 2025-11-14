@@ -2,7 +2,7 @@ const API = "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", loadFeed);
 
-//allow only 1 audio to play at a time & reset previous audio
+//stop multiple audios playing
 document.addEventListener(
   "play",
   function (e) {
@@ -10,7 +10,7 @@ document.addEventListener(
     audios.forEach((audio) => {
       if (audio !== e.target) {
         audio.pause();
-        audio.currentTime = 0;  
+        audio.currentTime = 0;
       }
     });
   },
@@ -21,37 +21,38 @@ async function loadFeed() {
   const feed = document.getElementById("feed");
 
   try {
-    //FETCH POSTS FROM MONGODB ONLY
     const res = await fetch(`${API}/api/posts`);
     let posts = await res.json();
 
+    //map static/DB file paths to actual URLs
     posts = posts.map((p) => {
-  let imgSrc = p.imgSrc;
-  let audioSrc = p.audioSrc;
+      let imgSrc = p.imgSrc;
+      let audioSrc = p.audioSrc;
 
-  //if the file path starts with /images or /audio
-  if (imgSrc.startsWith("/images")) {
-    imgSrc = `${API}/public${imgSrc}`;
-  }
-  if (audioSrc.startsWith("/audio")) {
-    audioSrc = `${API}/public${audioSrc}`;
-  }
+      //static files
+      if (imgSrc.startsWith("/images")) {
+        imgSrc = `${API}${imgSrc}`;
+      }
+      if (audioSrc.startsWith("/audio")) {
+        audioSrc = `${API}${audioSrc}`;
+      }
 
-  //if uploaded via server → should start with /uploads already
-  if (imgSrc.startsWith("/uploads")) {
-    imgSrc = `${API}${p.imgSrc}`;
-  }
-  if (audioSrc.startsWith("/uploads")) {
-    audioSrc = `${API}${p.audioSrc}`;
-  }
+      //Uploaded files (in /uploads)
+      if (imgSrc.startsWith("/uploads")) {
+        imgSrc = `${API}${imgSrc}`;
+      }
+      if (audioSrc.startsWith("/uploads")) {
+        audioSrc = `${API}${audioSrc}`;
+      }
 
-  return {
-    ...p,
-    imgSrc,
-    audioSrc,
-  };
-});
-    //render
+      return {
+        ...p,
+        imgSrc,
+        audioSrc,
+      };
+    });
+
+    //render posts
     feed.innerHTML = posts
       .map(
         (p) => `
@@ -70,7 +71,7 @@ async function loadFeed() {
       )
       .join("");
 
-    //click handler
+    //click handler → go to post page
     document.querySelectorAll(".post-card").forEach((card) => {
       card.addEventListener("click", (e) => {
         if (e.target.tagName === "AUDIO" || e.target.tagName === "SOURCE") return;
@@ -79,6 +80,7 @@ async function loadFeed() {
         if (id) window.location.href = `post.html?id=${id}`;
       });
     });
+
   } catch (err) {
     console.error("Feed load error:", err);
     feed.innerHTML = `<p style="color:red;">Failed to load posts.</p>`;

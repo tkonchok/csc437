@@ -1,54 +1,55 @@
 //server/src/index.ts
-import dotenv from "dotenv";
-dotenv.config();
-
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
+import express, { Request, Response } from "express";
 import path from "path";
+import cors from "cors";
 
-import postRoutes from "./routes/posts";
-import commentRoutes from "./routes/comments";
+import { connect } from "./services/mongo";
+import auth, { authenticateUser } from "./routes/auth";
+
+import profileRoutes from "./routes/profile";
 import messageRoutes from "./routes/messages";
-
-
-import auth from "./routes/auth";
-import posts from "./routes/posts";
-import profile from "./routes/profile";
-import messages from "./routes/messages";
-
-
+import audioPostRoutes from "./routes/audioposts";
+import commentRoutes from "./routes/comments";
+import audioPostREST from "./routes/audioposts_rest";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-//Mongo connection
-mongoose
-  .connect(process.env.MONGO_URI || "")
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection failed:", err));
-
-//Middleware
-app.use(cors());
-app.use(express.json());
+//static files
+const staticDir = process.env.STATIC || "public";
+app.use(express.static(staticDir));
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/public", express.static("../proto/public"));
+//DB
+connect("tenzyn_db");
+
+//Test
+app.get("/hello", (_req: Request, res: Response) => {
+  res.send("Hello, World");
+});
+
+/*AUTH*/
+app.use("/auth", auth);
+
+/*PROFILE & MESSAGES (protected at mount) */
+app.use("/profile", authenticateUser, profileRoutes);
+app.use("/messages", authenticateUser, messageRoutes);
+
+/*DATA APIs
+   Auth for mutations handled *inside* routers
+   GETs can be public (or still use auth if route says so)
+*/
+app.use("/api/audioposts", audioPostRoutes);
+app.use("/api/comments", commentRoutes);
+
+app.use("/api/posts", audioPostRoutes);
+app.use("/api/audioposts_rest", audioPostREST);
+
+/*UPLOADS*/
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-//Routes
-app.use("/auth", auth);
-app.use("/api/posts", posts);
-app.use("/profile", profile);
-app.use("/api/posts", postRoutes);
-app.use("/api/comments", commentRoutes);
-app.use("/messages", messageRoutes);
-app.use("/messages", messages);
-
-
-//Start server
 app.listen(port, () => {
-  console.log(`Dra.Wave running on http://localhost:${port}`);
+  console.log(`Dra.Wave server running on http://localhost:${port}`);
 });

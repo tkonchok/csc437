@@ -1,35 +1,41 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import multer from "multer";
 import path from "path";
+
 import AudioPosts from "../services/audio-svc";
-import { authenticate, AuthRequest } from "../middleware/authenticate";
+import { authenticateUser } from "../routes/auth";
 
 const router = express.Router();
 
-//storage
+/*Multer storage (uploads/)*/
 const storage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, "uploads/"),
   filename: (_, file, cb) => {
-    const uniqueName = `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`;
+    const uniqueName = `${file.fieldname}-${Date.now()}${path.extname(
+      file.originalname
+    )}`;
     cb(null, uniqueName);
   }
 });
+
 const upload = multer({ storage });
 
-router.get("/", async (req, res) => {
+/*GET all posts (public)*/
+router.get("/", async (req: Request, res: Response) => {
   try {
     const artist = req.query.artist as string | undefined;
     const posts = artist
       ? await AudioPosts.byArtist(artist)
       : await AudioPosts.index();
+
     res.json(posts);
   } catch (err) {
     res.status(500).json({ error: err });
   }
 });
 
-//GET SINGLE POST BY ID
-router.get("/:id", async (req, res) => {
+/*GET single post (public)*/
+router.get("/:id", async (req: Request, res: Response) => {
   try {
     const p = await AudioPosts.get(req.params.id);
     if (!p) return res.status(404).json({ error: "Post not found" });
@@ -39,14 +45,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//UPLOAD POST (AUTH REQUIRED)
+/*CREATE post (auth required)*/
 router.post(
   "/",
-  authenticate,
+  authenticateUser,
   upload.fields([{ name: "image" }, { name: "audio" }]),
-  async (req: AuthRequest, res) => {
+  async (req: Request, res: Response) => {
     try {
-      const username = req.user?.username!;
+      const username = (req as any).user?.username;
       const { title, genre, artist } = req.body;
 
       const imgFile = (req.files as any)?.image?.[0];
@@ -61,7 +67,7 @@ router.post(
         artist,
         imgSrc,
         audioSrc,
-        user: username,
+        user: username
       });
 
       res.status(201).json(post);

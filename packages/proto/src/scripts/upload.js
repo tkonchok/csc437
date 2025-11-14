@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fd.append("artist", username);
 
     try {
-      const res = await fetch(`${API}/api/posts`, {
+      const res = await fetch(`${API}/api/audioposts`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
