@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 
 //static files
 const staticDir = process.env.STATIC || "public";
-app.use(express.static(staticDir));
+app.use(express.static(path.join(__dirname, "../../proto/public")));
 
 app.use(cors());
 app.use(express.json());
