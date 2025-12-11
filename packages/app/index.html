@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DraWave</title>
+
+  <!-- Keep your CSS like the lab says -->
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/page.css">
+</head>
+
+<body>
+  <mu-history provides="wave:history">
+    <mu-auth provides="wave:auth" redirect="/login.html">
+      <article class="page">
+        <dra-header></dra-header>
+        <mu-switch></mu-switch>
+      </article>
+    </mu-auth>
+  </mu-history>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
