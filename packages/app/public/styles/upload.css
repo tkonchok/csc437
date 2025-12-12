@@ -1,0 +1,48 @@
+.upload-page {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.upload-card {
+  width: 320px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+.upload-card h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.upload-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.upload-form input[type="text"],
+.upload-form input[type="file"],
+.upload-form input:not([type]),
+.upload-form input[type="search"] {
+  width: 100%;
+  margin-bottom: 0.7rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.upload-form button {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  border: none;
+  background: #14d972;
+  font-weight: 600;
+  cursor: pointer;
+}

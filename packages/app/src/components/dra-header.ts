@@ -1,6 +1,12 @@
+// src/components/dra-header.ts
+console.log("DRA-HEADER LOADED FROM:", import.meta.url);
 import { LitElement, html, css } from "lit";
 
 export class DraHeader extends LitElement {
+  static properties = {
+    user: { type: Object }
+  };
+
   static styles = css`
     :host {
       display: block;
@@ -35,6 +41,8 @@ export class DraHeader extends LitElement {
       display: flex;
       justify-content: center;
       gap: 1rem;
+      padding: 0;
+      margin: 0;
     }
     nav a {
       color: inherit;
@@ -57,24 +65,66 @@ export class DraHeader extends LitElement {
     }
   `;
 
+  user: { username: string } | undefined = undefined;
+
+  connectedCallback() {
+    super.connectedCallback();
+    const username = localStorage.getItem("dra_username") || "";
+    this.user = username ? { username } : undefined;
+  }
+
   render() {
+    const u = this.user;
+    const loggedIn = !!u;
+    const username = u?.username;
+
     return html`
       <header>
         <div class="header-row">
           <div class="logo">
-            <a href="/app/home">
-              <img src="/images/Logo.png" alt="Dra.Wave Logo" />
+            <a href="/app/home" data-navigation>
+              <img src="/images/Logo.png" alt="DraWave Logo" />
             </a>
           </div>
 
           <div class="header-center">
             <h2 class="slogan">"Where Artists Share Ideas"</h2>
+
             <nav>
               <ul>
-                <li><a href="/app/home">Home</a></li>
-                <li><a href="/upload.html">Upload</a></li>
-                <li><a href="/messages.html">Messages</a></li>
-                <li><a href="/profile.html">Profile</a></li>
+                <li><a href="/app/home" data-navigation>Home</a></li>
+
+                ${loggedIn
+                  ? html`
+                      <li>
+                        <a href="/app/upload" data-navigation>Upload</a>
+                      </li>
+                      <li>
+                        <a href="/app/messages" data-navigation>Messages</a>
+                      </li>
+                      <li>
+                        <a href="/app/profile/${username}" data-navigation>
+                          Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/app/login"
+                          @click=${this.logout}
+                          data-navigation
+                        >
+                          Logout
+                        </a>
+                      </li>
+                    `
+                  : html`
+                      <li>
+                        <a href="/app/login" data-navigation>Sign In</a>
+                      </li>
+                      <li>
+                        <a href="/app/signup" data-navigation>Sign Up</a>
+                      </li>
+                    `}
               </ul>
             </nav>
           </div>
@@ -90,13 +140,17 @@ export class DraHeader extends LitElement {
     `;
   }
 
-  private toggleDarkMode(event: Event) {
-    const checked = (event.currentTarget as HTMLInputElement).checked;
-    const htmlEl = document.documentElement;
-    if (checked) {
-      htmlEl.classList.add("dark-mode");
-    } else {
-      htmlEl.classList.remove("dark-mode");
-    }
+  logout(event: MouseEvent) {
+    event.preventDefault();
+    localStorage.removeItem("dra_token");
+    localStorage.removeItem("dra_username");
+    // optional: clear mustang auth token too
+    localStorage.removeItem("mu:auth:jwt");
+    window.location.assign("/app/login");
+  }
+
+  toggleDarkMode(event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    document.documentElement.classList.toggle("dark-mode", checked);
   }
 }

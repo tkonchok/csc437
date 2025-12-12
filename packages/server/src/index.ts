@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, "../../proto/public")));
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //DB
 connect("tenzyn_db");

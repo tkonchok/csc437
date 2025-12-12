@@ -4,19 +4,38 @@
   <meta charset="UTF-8" />
   <title>DraWave</title>
 
-  <!-- Keep your CSS like the lab says -->
-  <link rel="stylesheet" href="/styles/reset.css">
-  <link rel="stylesheet" href="/styles/tokens.css">
-  <link rel="stylesheet" href="/styles/page.css">
+  <link rel="stylesheet" href="/styles/reset.css" />
+  <link rel="stylesheet" href="/styles/tokens.css" />
+  <link rel="stylesheet" href="/styles/page.css" />
+  <!-- NEW: page-specific styles -->
+  <link rel="stylesheet" href="/styles/profile.css" />
+  <link rel="stylesheet" href="/styles/upload.css" />
+  <link rel="stylesheet" href="/styles/messages.css" />
 </head>
 
 <body>
   <mu-history provides="wave:history">
-    <mu-auth provides="wave:auth" redirect="/login.html">
-      <article class="page">
-        <dra-header></dra-header>
-        <mu-switch></mu-switch>
-      </article>
+    <mu-auth provides="wave:auth" redirect="/app/login">
+      <mu-store provides="wave:model">
+        <article class="page">
+          <dra-header></dra-header>
+
+          <mu-switch>
+            <mu-route path="/" redirect="/app/home"></mu-route>
+            <mu-route path="/app" redirect="/app/home"></mu-route>
+
+            <mu-route path="/app/home" view="home-view"></mu-route>
+            <mu-route path="/app/login" view="login-view"></mu-route>
+            <mu-route path="/app/signup" view="signup-view"></mu-route>
+            <mu-route path="/app/upload" view="upload-view"></mu-route>
+            <mu-route path="/app/messages" view="messages-view"></mu-route>
+            <mu-route
+              path="/app/profile/:username"
+              view="profile-view"
+            ></mu-route>
+          </mu-switch>
+        </article>
+      </mu-store>
     </mu-auth>
   </mu-history>
 
