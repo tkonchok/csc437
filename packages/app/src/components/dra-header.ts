@@ -1,6 +1,12 @@
-// src/components/dra-header.ts
+//src/components/dra-header.ts
 console.log("DRA-HEADER LOADED FROM:", import.meta.url);
 import { LitElement, html, css } from "lit";
+import { apiFetch } from "../services/api";
+
+type HeaderUser = {
+  username: string;
+  avatarSrc?: string;
+};
 
 export class DraHeader extends LitElement {
   static properties = {
@@ -43,6 +49,7 @@ export class DraHeader extends LitElement {
       gap: 1rem;
       padding: 0;
       margin: 0;
+      align-items: center;
     }
     nav a {
       color: inherit;
@@ -51,11 +58,25 @@ export class DraHeader extends LitElement {
       padding: 0.4rem 0.8rem;
       border-radius: 10px;
       transition: 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     nav a:hover {
       background: var(--green, #14d972);
       color: #000;
     }
+
+    /* ✅ avatar in nav */
+    .nav-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 2px solid var(--green, #14d972);
+      display: block;
+    }
+
     .dark-toggle label {
       display: flex;
       align-items: center;
@@ -65,18 +86,40 @@ export class DraHeader extends LitElement {
     }
   `;
 
-  user: { username: string } | undefined = undefined;
+  user: HeaderUser | undefined = undefined;
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
+
     const username = localStorage.getItem("dra_username") || "";
-    this.user = username ? { username } : undefined;
+    const token = localStorage.getItem("dra_token") || localStorage.getItem("mu:auth:jwt") || "";
+
+    if (!username || !token) {
+      this.user = undefined;
+      return;
+    }
+
+    // ✅ load avatarSrc from backend
+    try {
+      const profile = (await apiFetch("/profile/me")) as any;
+      this.user = {
+        username: profile?.username ?? username,
+        avatarSrc: profile?.avatarSrc ?? ""
+      };
+    } catch {
+      // fallback to username only
+      this.user = { username };
+    }
   }
 
   render() {
     const u = this.user;
     const loggedIn = !!u;
     const username = u?.username;
+    const avatarSrc = u?.avatarSrc || "";
+
+    // cache-bust avatar so header updates immediately after upload
+    const avatarUrl = avatarSrc ? `${avatarSrc}?t=${Date.now()}` : "";
 
     return html`
       <header>
@@ -96,34 +139,27 @@ export class DraHeader extends LitElement {
 
                 ${loggedIn
                   ? html`
-                      <li>
-                        <a href="/app/upload" data-navigation>Upload</a>
-                      </li>
-                      <li>
-                        <a href="/app/messages" data-navigation>Messages</a>
-                      </li>
+                      <li><a href="/app/upload" data-navigation>Upload</a></li>
+                      <li><a href="/app/messages" data-navigation>Messages</a></li>
+
+                      <!-- ✅ avatar link OR username link -->
                       <li>
                         <a href="/app/profile/${username}" data-navigation>
-                          Profile
+                          ${avatarUrl
+                            ? html`<img class="nav-avatar" src="${avatarUrl}" alt="avatar" />`
+                            : html`${username}`}
                         </a>
                       </li>
+
                       <li>
-                        <a
-                          href="/app/login"
-                          @click=${this.logout}
-                          data-navigation
-                        >
+                        <a href="/app/login" @click=${this.logout} data-navigation>
                           Logout
                         </a>
                       </li>
                     `
                   : html`
-                      <li>
-                        <a href="/app/login" data-navigation>Sign In</a>
-                      </li>
-                      <li>
-                        <a href="/app/signup" data-navigation>Sign Up</a>
-                      </li>
+                      <li><a href="/app/login" data-navigation>Sign In</a></li>
+                      <li><a href="/app/signup" data-navigation>Sign Up</a></li>
                     `}
               </ul>
             </nav>
@@ -144,7 +180,6 @@ export class DraHeader extends LitElement {
     event.preventDefault();
     localStorage.removeItem("dra_token");
     localStorage.removeItem("dra_username");
-    // optional: clear mustang auth token too
     localStorage.removeItem("mu:auth:jwt");
     window.location.assign("/app/login");
   }

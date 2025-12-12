@@ -44,7 +44,6 @@ export class HomeView extends View<Model, Msg> {
   `;
 
   constructor() {
-    // "wave:model" must match provides="wave:model" on <mu-store>
     super("wave:model");
   }
 
@@ -54,22 +53,43 @@ export class HomeView extends View<Model, Msg> {
 
   connectedCallback() {
     super.connectedCallback();
-    // Ask the store to fetch posts
     this.dispatchMessage(["posts/request", {}]);
   }
 
-  private renderPostCard(post: AudioPost) {
-    return html`
-      <div class="post">
-        <img class="cover" src="${post.imgSrc}" alt="${post.title}" />
-        <div class="title">${post.title}</div>
-        <div class="artist">${post.artist}</div>
-        <audio controls>
-          <source src="${post.audioSrc}" type="audio/wav" />
-        </audio>
-      </div>
-    `;
-  }
+private renderPostCard(post: AudioPost) {
+  const API = "http://localhost:3000";
+
+  const img = post.imgSrc
+    ? post.imgSrc.startsWith("http")
+      ? post.imgSrc
+      : API + post.imgSrc
+    : "";
+
+  const audio = post.audioSrc
+    ? post.audioSrc.startsWith("http")
+      ? post.audioSrc
+      : API + post.audioSrc
+    : "";
+
+  return html`
+    <div class="post">
+      ${img
+        ? html`<img class="cover" src="${img}" alt="${post.title}" />`
+        : null}
+
+      <div class="title">${post.title}</div>
+      <div class="artist">${post.artist}</div>
+
+      ${audio
+        ? html`
+            <audio controls>
+              <source src="${audio}" />
+            </audio>
+          `
+        : html`<em>No audio</em>`}
+    </div>
+  `;
+}
 
   render() {
     const posts = this.posts ?? [];

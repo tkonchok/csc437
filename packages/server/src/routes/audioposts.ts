@@ -66,7 +66,14 @@ router.post(
       const username = (req as any).user?.username;
       if (!username) return res.status(401).json({ error: "Unauthorized" });
 
-      const { title, genre, artist } = req.body;
+      // ✅ DO NOT destructure multipart body
+      const title = req.body?.title;
+      const genre = req.body?.genre;
+      const artist = username;
+
+      if (!title) {
+        return res.status(400).json({ error: "Title is required" });
+      }
 
       const files = req.files as {
         [field: string]: Express.Multer.File[];
@@ -75,14 +82,15 @@ router.post(
       const imgFile = files?.image?.[0];
       const audioFile = files?.audio?.[0];
 
-      //if files uploaded, use /uploads/...; otherwise fall back to any imgSrc/audioSrc in body
+      if (!audioFile) {
+        return res.status(400).json({ error: "Audio file required" });
+      }
+
       const imgSrc = imgFile
         ? `/uploads/${imgFile.filename}`
-        : (req.body.imgSrc || "");
+        : "";
 
-      const audioSrc = audioFile
-        ? `/uploads/${audioFile.filename}`
-        : (req.body.audioSrc || "");
+      const audioSrc = `/uploads/${audioFile.filename}`;
 
       const newPost = await AudioPosts.create({
         title,
@@ -91,7 +99,7 @@ router.post(
         imgSrc,
         audioSrc,
         user: username
-      } as AudioPost & { user?: string });
+      });
 
       res.status(201).json(newPost);
     } catch (err) {

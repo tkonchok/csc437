@@ -12,7 +12,8 @@ interface Profile {
 interface Post {
   _id?: string;
   title?: string;
-  audioUrl?: string;
+  audioSrc?: string;
+  imgSrc?: string;
 }
 
 export class ProfileView extends View {
@@ -118,11 +119,7 @@ export class ProfileView extends View {
 
   async saveBio(event: Event) {
     event.preventDefault();
-
-    const textarea = this.renderRoot.querySelector(
-      "#bio"
-    ) as HTMLTextAreaElement | null;
-
+    const textarea = this.renderRoot.querySelector("#bio") as HTMLTextAreaElement | null;
     const bio = textarea?.value ?? "";
 
     try {
@@ -141,12 +138,9 @@ export class ProfileView extends View {
 
   async uploadAvatar(event: Event) {
     event.preventDefault();
-
-    const input = this.renderRoot.querySelector(
-      "#avatar"
-    ) as HTMLInputElement | null;
-
+    const input = this.renderRoot.querySelector("#avatar") as HTMLInputElement | null;
     const file = input?.files?.[0];
+
     if (!file) {
       alert("Select a file first!");
       return;
@@ -161,7 +155,13 @@ export class ProfileView extends View {
         body: form
       });
 
-      this.profile = updated as Profile;
+      //Update + force image refresh (cache bust)
+      const p = updated as Profile;
+      this.profile = {
+        ...p,
+        avatarSrc: p.avatarSrc ? `${p.avatarSrc}?t=${Date.now()}` : ""
+      };
+
       alert("Avatar updated!");
     } catch (err) {
       console.error("Avatar upload error:", err);
@@ -170,35 +170,25 @@ export class ProfileView extends View {
   }
 
   render() {
-    if (!this.profile) {
-      return html`<p>Loading profile...</p>`;
-    }
+    if (!this.profile) return html`<p>Loading profile...</p>`;
+
+    const avatar = this.profile.avatarSrc || "/images/default-avatar.png";
 
     return html`
       <section class="profile">
-        <h2>Your Profile</h2>
+        <!--Title should be username-->
+        <h2>${this.profile.username}</h2>
 
-        <img
-          class="avatar"
-          src="${this.profile.avatarSrc || "/images/default-avatar.png"}"
-          alt="avatar"
-        />
+        <img class="avatar" src="${avatar}" alt="avatar" />
 
         <form @submit=${this.uploadAvatar}>
-          <input
-            id="avatar"
-            type="file"
-            name="avatar"
-            accept="image/*"
-          />
+          <input id="avatar" type="file" name="avatar" accept="image/*" />
           <button type="submit">Upload Avatar</button>
         </form>
 
         <h3>About you</h3>
         <form @submit=${this.saveBio}>
-          <textarea id="bio">
-${this.profile.bio || ""}</textarea
-          >
+          <textarea id="bio">${this.profile.bio || ""}</textarea>
           <button type="submit">Save Bio</button>
         </form>
 
@@ -211,9 +201,9 @@ ${this.profile.bio || ""}</textarea
                   (p) => html`
                     <li>
                       <strong>${p.title || "(untitled)"}</strong><br />
-                      ${p.audioUrl
-                        ? html`<audio controls src="${p.audioUrl}"></audio>`
-                        : html`<em>No audio URL</em>`}
+                      ${p.audioSrc
+                        ? html`<audio controls src="${p.audioSrc}"></audio>`
+                        : html`<em>No audio</em>`}
                     </li>
                   `
                 )}

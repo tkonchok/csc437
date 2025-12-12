@@ -60,14 +60,14 @@ export class LoginView extends View<Model, Msg> {
 
       const { token } = (await res.json()) as { token: string };
 
-      // ✅ Store token + username for the rest of the app
+      //Store token + username for the rest of the app
       localStorage.setItem("dra_token", token);
       localStorage.setItem("dra_username", username);
 
-      // Optionally clear old Mustang token if it exists
+      //Optionally clear old Mustang token if it exists
       localStorage.removeItem("mu:auth:jwt");
 
-      // ✅ Hard redirect so header re-runs connectedCallback
+      //Hard redirect so header reruns connectedCallback
       window.location.assign("/app/home");
     } catch (err) {
       console.error("Login error:", err);

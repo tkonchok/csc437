@@ -19,7 +19,7 @@ define({
   "login-view": LoginView,
   "signup-view": SignupView,
   "upload-view": UploadView,
-  "messages-view": MessagesView
+  "messages-view": MessagesView,
 });
 
 // Routes
